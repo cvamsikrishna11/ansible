@@ -1,0 +1,46 @@
+---
+- name: "setup tomcat with the custom installation as it wont be available on the yum repo"
+  hosts: all
+  become: True
+
+  tasks:
+    - name: "install java on RHEL category machines"
+      yum:
+        name: java
+        state: installed
+      when: ansible_os_family == "RedHat"
+
+    - name: "install jdk on the ububntu machine"
+      apt:
+        name: default-jdk
+        state: present
+      when: ansible_os_family == "Debian"
+
+    - name: "download tomcat packages using get_url module which is similar to wget"
+      get_url:
+        url: https://dlcdn.apache.org/tomcat/tomcat-8/v8.5.81/bin/apache-tomcat-8.5.81.tar.gz
+        dest: /opt
+
+    - name: "untar tomcat package"
+      unarchive:
+        src: /opt/apache-tomcat-8.5.81.tar.gz
+        dest: /opt
+        remote_src: yes
+
+    - name: "add execution permissions on the tomcat startup.sh file"
+      file:
+        path: /opt/apache-tomcat-8.5.81/bin/startup.sh
+        mode: 0777
+
+    - name: "start the tomcat service, with shell module which can execute the shell scripts"
+      shell: nohup ./startup.sh
+      args:
+        chdir: /opt/apache-tomcat-8.5.81/bin
+
+
+
+
+
+
+
+

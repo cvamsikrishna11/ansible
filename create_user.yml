@@ -1,0 +1,19 @@
+---
+- name: "To create user in all the servers & also using variables concept"
+  hosts: all
+  become: True
+  vars: 
+    user: modi
+  vars_files:
+    - user-vars.yml
+  tasks:
+    - name: "creating a user with intenal variable, user: {{ user }}"
+      user: 
+        name: "{{ user }}"
+
+    - name: "creating a user by accepting the variable name from other file, user: {{ name }}"
+      user:
+        name: "{{ name }}"
+
+    # Finally, we can pass the vars via command line which will have the highest priority, we can think of this to pass theh dynamic variable likes env, host details et. And the sample command is
+    # ansible-playbook create_user.yml -e "user=vamsi name=krishna"

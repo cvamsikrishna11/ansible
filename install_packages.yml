@@ -1,0 +1,26 @@
+---
+- name: to install the required packages
+  hosts: webservers
+  become: True
+
+  tasks:
+    - name: installing httpd
+      yum: 
+        name: [ 'httpd', 'gcc', 'wget', 'telnet', 'gzip'] # right one to use
+              #name: "{{ item }}" # deprecated
+        state: installed
+          #    with_items:   # deprecated
+          #        - git
+          #        - httpd
+          #        - gcc
+          #        - wget
+
+    - name: installing git
+      yum:
+        name: git
+        state: installed
+    - name: installing the Tree package
+      yum: 
+        name: tree
+        state: installed
+
