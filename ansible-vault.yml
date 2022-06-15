@@ -1,0 +1,21 @@
+---
+# To pull git but reading the credentials from vault file git-secrets.yml as a variable
+# Flow: ansible play book execution for ansible-vault.yml --> and it have a variable file called git-secrets.yml (but the thing is that file is encrypted with vault) so if we directly calls the ansible with the command ansible-playbook -i hosts ansible-vault.yml then we will get an error coz the ansible-playbook cant decrypt the git-secret.yml so we have to add flage called --ask-vault-pass as shown below and then ansible will immediatly asks for a vault password if we enter the right password if will decrypt and read the vaiable from git-secrets.yml
+# ansible-playbook -i hosts ansible-vault.yml --ask-vault-pass
+#
+#
+# vault password file to pass the vault password from a file instead of a command, maybe thing oof keeping this file at some secured location like s3 bucket rather than giving the password to everyone and attache the iam role of the s3 bucket get object to control tower
+# ansible-playbook -i hosts ansible-vault.yml --vault-password-file password.yml
+
+- name: "ansible playbook to test ansible vault"
+  hosts: all
+  become: True
+  vars_files:
+    - git-secrets.yml
+
+
+  tasks:
+    - name: "Clone a repo"
+      git:
+        repo: https://cvamsikrishna11:{{ password }}@github.com/cvamsikrishna11/ansible.git
+        dest: /opt/ansadmin/test-vault
