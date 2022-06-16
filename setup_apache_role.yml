@@ -1,0 +1,6 @@
+---
+- name: to install the httpd and start the service
+  hosts: all
+  become: True
+  roles:
+    - setup-apache

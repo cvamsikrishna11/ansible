@@ -11,4 +11,4 @@
 	- Ansible vault, vault with the combination of variables and variable files
 	- Notify handlers, Gathering facts
 
-* Dependency to test he vault functionality with git, fill the password value with github personal access token
+* Dependency: To test the vault functionality with git, fill the password value with github personal access token
